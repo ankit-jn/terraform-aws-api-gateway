@@ -166,7 +166,7 @@ variable "http_method" {
     }
 }
 
-variable "authorization" {
+variable "method_authorization" {
     description = "(Optional) Type of authorization used for the method."
     type        = string
     default     = "NONE"
@@ -219,31 +219,36 @@ variable "request_models" {
     default     = {}
 }
 
-variable "request_headers" {
+variable "method_request_headers" {
     description = "The map of Headers where key is header name and value indicates if the header is required."
     type        = map(bool)
     default     = {}
 }
 
-variable "query_string_parameters" {
+variable "method_query_string_parameters" {
     description = "The map of Query String Parameters where key is Parameter name and value indicates if the parameter is required."
     type        = map(bool)
     default     = {}
 }
 
-variable "request_headers" {
-    description = "The map of Headers where key is header name and value indicates if the header is required."
-    type        = map(bool)
-    default     = {}
-}
-
-variable "responses" {
+variable "method_responses" {
     description = <<EOF
 List of response configuration map to be used with Method:
 
 status_code: HTTP Status Code
 response_headers: (Optional) The map of headers where key is the header name and value indicates if the header is mandatory.
 response_models: (Optional) Map of API models used for response's content type where key is the content type and value is model's name.
+EOF
+    type    = any
+    default = [] 
+}
+
+variable "integration_responses" {
+    description = <<EOF
+List of response configuration map to be used with Integration:
+
+status_code: HTTP Status Code
+http_method: HTTP Method
 EOF
     type    = any
     default = [] 

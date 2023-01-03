@@ -15,48 +15,6 @@ module "rest_api" {
     default_tags = var.default_tags
 }
 
-module "api_resource" {
-    source = "./modules/api-resource"
-
-    count = var.create_resource ? 1 : 0
-
-    rest_api_id = local.rest_api_id
-    parent_id   = (var.parent_resource_id != null 
-                                && var.parent_resource_id != "") ? var.parent_resource_id : local.root_resource_id
-    path_part   = var.path_part 
-}
-
-module "api_method" {
-    source = "./modules/api-method"
-
-    count = var.create_method ? 1 : 0
-
-    rest_api_id = local.rest_api_id
-    resource_id = local.resource_id
-    http_method  = var.http_method
-    
-    authorization = var.authorization 
-    authorizer_id = var.authorizer_id
-    authorization_scopes = var.authorization_scopes
-
-    api_key_required = var.api_key_required
-    
-    validate_request_body       = var.validate_request_body
-    validate_request_parameters = var.validate_request_parameters
-
-    operation_name = var.operation_name
-    request_models = var.request_models
-    
-    request_headers = var.request_headers
-    query_string_parameters = var.query_string_parameters
-
-    responses = var.responses
-    
-    depends_on = [
-        module.api_models
-    ]
-}
-
 module "api_models" {
     source = "./modules/api-models"
 
@@ -78,4 +36,60 @@ module "api_security" {
     authorizers = var.authorizers
     
     default_tags = var.default_tags
+}
+
+module "api_resource" {
+    source = "./modules/api-resource"
+
+    count = var.create_resource ? 1 : 0
+
+    rest_api_id = local.rest_api_id
+    parent_id   = (var.parent_resource_id != null 
+                                && var.parent_resource_id != "") ? var.parent_resource_id : local.root_resource_id
+    path_part   = var.path_part 
+}
+
+module "api_method" {
+    source = "./modules/api-method"
+
+    count = var.create_method ? 1 : 0
+
+    rest_api_id = local.rest_api_id
+    resource_id = local.resource_id
+    http_method  = var.http_method
+    
+    authorization = var.method_authorization 
+    authorizer_id = var.authorizer_id
+    authorization_scopes = var.authorization_scopes
+
+    api_key_required = var.api_key_required
+    
+    validate_request_body       = var.validate_request_body
+    validate_request_parameters = var.validate_request_parameters
+
+    operation_name = var.operation_name
+    request_models = var.request_models
+    
+    request_headers = var.method_request_headers
+    query_string_parameters = var.method_query_string_parameters
+
+    responses = var.method_responses
+    
+    depends_on = [
+        module.api_models
+    ]
+}
+
+module "api_integration" {
+    source = "./modules/api-integration"
+
+    rest_api_id = local.rest_api_id
+    resource_id = local.resource_id
+    http_method  = var.http_method
+
+    responses = var.integration_responses
+
+    depends_on = [
+        module.api_method
+    ]
 }
