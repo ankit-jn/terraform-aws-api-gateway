@@ -1,6 +1,6 @@
 resource aws_api_gateway_rest_api "this" {
     name = var.name
-    description = coalesce(var.description, format("API Gateway - %s", var.name))
+    description = var.description
 
     api_key_source = var.api_key_source
     
@@ -14,5 +14,5 @@ resource aws_api_gateway_rest_api "this" {
         vpc_endpoint_ids = var.endpoint_type == "PRIVATE" ? var.vpc_endpoint_ids : null
     }
     
-    tags = var.tags
+    tags = merge({"Name" = var.name}, var.default_tags)
 }

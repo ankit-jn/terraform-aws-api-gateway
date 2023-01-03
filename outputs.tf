@@ -27,3 +27,8 @@ output "resource_path" {
     description = "Complete path for the API resource, including all parent paths."
     value       = var.create_resource ? module.api_resource[0].path : null
 }
+
+output "api_keys" {
+    description = "The API key details."
+    value       = module.api_security.api_keys
+}

@@ -4,13 +4,14 @@ module "rest_api" {
     count = var.create_api ? 1 : 0
 
     name = var.name
-    description = var.description
+    description =  coalesce(var.description, format("API Gateway - %s", var.name))
     api_key_source = var.api_key_source
     binary_media_types = var.binary_media_types
     minimum_compression_size = var.minimum_compression_size
     endpoint_type = var.endpoint_type
     vpc_endpoint_ids = var.vpc_endpoint_ids
     disable_execute_api_endpoint = var.disable_execute_api_endpoint
+
     default_tags = var.default_tags
 }
 
@@ -65,4 +66,16 @@ module "api_models" {
     description = lookup(each.value, "description", null)
     content_type = lookup(each.value, "content_type", "application/json")
     schema = jsonencode(lookup(each.value, "schema"))
+}
+
+module "api_security" {
+    source = "./modules/api-security"
+
+    api_gateway_name = var.name
+    rest_api_id = local.rest_api_id
+    
+    api_keys = var.api_keys
+    authorizers = var.authorizers
+    
+    default_tags = var.default_tags
 }
