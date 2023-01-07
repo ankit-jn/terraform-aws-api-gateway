@@ -83,10 +83,29 @@ module "api_method" {
 module "api_integration" {
     source = "./modules/api-integration"
 
+    count = var.create_method ? 1 : 0
+
     rest_api_id = local.rest_api_id
     resource_id = local.resource_id
     http_method  = var.http_method
 
+    integration_http_method = var.integration_http_method
+    integration_type = var.integration_type
+    connection_type = var.integration_connection_type
+    connection_id = var.integration_connection_id
+    uri = var.integration_uri
+    credentials = var.integration_credentials
+    content_handling = var.integration_request_content_handling
+    cache_namespace = var.integration_cache_namespace
+    timeout = var.integration_timeout
+    
+    passthrough_behavior = var.integration_passthrough_behavior
+    
+    request_templates = var.integration_request_templates
+    request_headers = var.integration_request_headers
+    request_parameters = var.integration_request_parameters
+    cache_parameters = var.integration_cache_parameters
+    
     responses = var.integration_responses
 
     depends_on = [

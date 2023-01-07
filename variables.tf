@@ -1,5 +1,5 @@
 ###################################################
-## API Gateway
+## Control Flags
 ###################################################
 variable "create_api" {
     description = "Flag to decide if API Gateway should be provisioned."
@@ -7,6 +7,21 @@ variable "create_api" {
     default     = true
 }
 
+variable "create_resource" {
+    description = "Flag to decide if API resource should be provisioned."
+    type        = bool
+    default     = false
+}
+
+variable "create_method" {
+    description = "Flag to decide if AI resource method should be provisioned."
+    type        = bool
+    default     = false
+}
+
+###################################################
+## API Gateway
+###################################################
 variable "name" {
     description = "(Required) The name of the Rest API Gateway"
     type        = string
@@ -122,12 +137,6 @@ EOF
 ###################################################
 ## API Resource
 ###################################################
-variable "create_resource" {
-    description = "Flag to decide if API resource should be provisioned."
-    type        = bool
-    default     = false
-}
-
 variable "parent_resource_id" {
     description = "(Optional) ID of the parent API resource; Default will be set to `root_resource_id` of Rest API gateway."
     type        = string
@@ -143,12 +152,6 @@ variable "path_part" {
 ###################################################
 ## API Resource Method
 ###################################################
-variable "create_method" {
-    description = "Flag to decide if AI resource method should be provisioned."
-    type        = bool
-    default     = false
-}
-
 variable "resource_id" {
     description = "(Required, if `create_resource` is set `false`) API resource ID."
     type        = string
@@ -231,6 +234,126 @@ variable "method_query_string_parameters" {
     default     = {}
 }
 
+###################################################
+## API Resource Method Integration
+###################################################
+variable "integration_http_method" {
+    description = "(Required, if `integration_type` is set `AWS`, `AWS_PROXY`, `HTTP` or `HTTP_PROXY`) Integration HTTP Method."
+    type        = string
+    default     = null
+
+    validation {
+        condition = var.integration_http_method == null ? true : contains(["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "ANY"], var.integration_http_method)
+        error_message = "Valid values for `integration_http_method` are `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, `OPTIONS` or `ANY`."
+    }
+}
+
+variable "integration_type" {
+    description = "(Required, if `create_method` is set `true`) Integration Input's type."
+    type        = string
+    default     = null
+
+    validation {
+        condition = var.integration_type == null ? true : contains(["AWS", "AWS_PROXY", "HTTP", "HTTP_PROXY", "MOCK"], var.integration_type)
+        error_message = "Valid values for `integration_type` are `AWS`, `AWS_PROXY`, `HTTP`, `HTTP_PROXY` or `MOCK`."
+    }
+}
+
+variable "integration_connection_type" {
+    description = "(Optional) Integration Input's type."
+    type        = string
+    default     = "Internet"
+
+    validation {
+        condition = contains(["Internet", "VPC_LINK"], var.integration_connection_type)
+        error_message = "Valid values for `integration_connection_type` are `Internet` or `VPC_LINK`."
+    }
+}
+
+variable "integration_connection_id" {
+    description = "(Optional) ID of the VpcLink used for the integration."
+    type        = string
+    default     = null
+}
+
+variable "integration_uri" {
+    description = "(Optional) Input's URI. Required if type is AWS, AWS_PROXY, HTTP or HTTP_PROXY."
+    type        = string
+    default     = null
+}
+
+variable "integration_credentials" {
+    description = "(Optional) Credentials required for the integration."
+    type        = string
+    default     = null
+}
+
+variable "integration_request_content_handling" {
+    description = "(Optional) How to handle request payload content type conversions."
+    type        = string
+    default     = null
+
+    validation {
+        condition = var.integration_content_handling == null ? true : contains(["CONVERT_TO_BINARY", "CONVERT_TO_TEXT"], var.integration_content_handling)
+        error_message = "Valid values for `integration_content_handling` are `CONVERT_TO_BINARY` or `CONVERT_TO_TEXT`."
+    }
+}
+
+variable "integration_cache_namespace" {
+    description = "(Optional) Integration's cache namespace."
+    type        = string
+    default     = null
+}
+
+variable "integration_timeout" {
+    description = "(Optional) Custom timeout between 50 and 29,000 milliseconds."
+    type        = number
+    default     = 29000
+
+    validation {
+        condition = var.integration_timeout >= 50 && var.var.integration_timeout <= 29000
+        error_message = "Allowed values for `integration_timeout` between 50 and 29000 (both inclusive)." 
+    }
+}
+
+variable "integration_passthrough_behavior" {
+    description = "(Optional) Integration passthrough behavior."
+    type        = string
+    default     = null
+
+    validation {
+        condition = var.passthrough_behavior == null ? true : contains(["WHEN_NO_MATCH", "WHEN_NO_TEMPLATES", "NEVER"], var.passthrough_behavior)
+        error_message = "Valid values for `passthrough_behavior` are `WHEN_NO_MATCH`, `WHEN_NO_TEMPLATES` or `NEVER`."
+    }
+}
+
+variable "integration_request_templates" {
+    description = "(Optional) Map of the integration's request templates."
+    type        = map(string)
+    default     = {}
+}
+
+variable "integration_request_headers" {
+    description = "(Optional) The list of request headers that should be passed to the backedn responser."
+    type        = map(string)
+    default     = {}
+}
+
+variable "integration_request_parameters" {
+    description = "(Optional) The list of request query string parameters that should be passed to the backedn responser."
+    type        = map(string)
+    default     = {}
+}
+
+variable "integration_cache_parameters" {
+    description = "(Optional) List of cache key parameters for the integration."
+    type        = list(string)
+    default     = []
+}
+
+###################################################
+## API Resource Method Response
+###################################################
 variable "method_responses" {
     description = <<EOF
 List of response configuration map to be used with Method:
@@ -243,12 +366,19 @@ EOF
     default = [] 
 }
 
+###################################################
+## API Resource Method Integration Response
+###################################################
 variable "integration_responses" {
     description = <<EOF
 List of response configuration map to be used with Integration:
 
 status_code: HTTP Status Code
 http_method: HTTP Method
+selection_pattern: (Optional) Regular expression pattern used to choose an integration response based on the response from the backend.
+content_handling: (Optional) How to handle request payload content type conversions.
+response_headers: (Optional) The list of headers that can be read from the backend responses.
+response_templates:(Optional) Map of templates used to transform the integration response body.
 EOF
     type    = any
     default = [] 
