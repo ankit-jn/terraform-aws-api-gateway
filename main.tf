@@ -112,3 +112,38 @@ module "api_integration" {
         module.api_method
     ]
 }
+
+module "api_deployment" {
+    source = "./modules/api-deployment"
+
+    count = var.create_deployment ? 1 : 0
+
+    api_gateway_name = var.name
+    rest_api_id = local.rest_api_id
+
+    description = var.deployment_description
+    
+    triggers = var.deployment_triggers
+    
+    stage_name = var.stage_name
+    stage_description = var.stage_description
+    stage_variables = var.stage_variables
+
+    canary_deployment = var.canary_deployment
+    canary_traffic_percentage = var.canary_traffic_percentage
+    use_stage_cache = var.use_stage_cache
+    canary_variables = var.canary_variables
+
+    cache_cluster_enabled = var.cache_cluster_enabled
+    cache_cluster_size = var.cache_cluster_size
+    
+    xray_tracing_enabled = var.xray_tracing_enabled
+    client_certificate_id = var.client_certificate_id
+    documentation_version = var.documentation_version
+    
+    enable_access_logs = var.enable_access_logs
+    access_log_destination = var.access_log_destination
+    access_log_format = var.access_log_format
+
+    default_tags = var.default_tags
+}

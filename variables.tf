@@ -14,7 +14,13 @@ variable "create_resource" {
 }
 
 variable "create_method" {
-    description = "Flag to decide if AI resource method should be provisioned."
+    description = "Flag to decide if API resource method should be provisioned."
+    type        = bool
+    default     = false
+}
+
+variable "create_deployment" {
+    description = "Flag to decide if API deployment is configured."
     type        = bool
     default     = false
 }
@@ -382,4 +388,109 @@ response_templates:(Optional) Map of templates used to transform the integration
 EOF
     type    = any
     default = [] 
+}
+
+###################################################
+## API Deployment
+###################################################
+variable "deployment_description" {
+    description = "(Optional) Description of the deployment"
+    type        = string
+    default     = null 
+}
+
+variable "deployment_triggers" {
+    description = "(Optional) Map of arbitrary keys and values that, when changed, will trigger a redeployment."
+    type        = map(string)
+    default     = {}
+}
+
+variable "stage_name" {
+    description = "(Optional) Name of the stage to create with this deployment."
+    type        = string
+    default     = null
+}
+
+variable "stage_description" {
+    description = "(Optional) (Optional) Description of the stage."
+    type        = string
+    default     = null
+}
+
+variable "cache_cluster_enabled" {
+    description = "(Optional) Whether a cache cluster is enabled for the stage."
+    type        = bool
+    default     = false
+}
+
+variable "cache_cluster_size" {
+    description = "(Optional) Size of the cache cluster for the stage, if enabled."
+    type        = number
+    default     = 0.5
+}
+
+variable "xray_tracing_enabled" {
+    description = "(Optional) Whether active tracing with X-ray is enabled."
+    type        = bool
+    default     = false
+}
+
+variable "client_certificate_id" {
+    description = "(Optional) Identifier of a client certificate for the stage."
+    type        = string
+    default     = null
+}
+
+variable "documentation_version" {
+    description = "(Optional) Version of the associated API documentation."
+    type        = string
+    default     = null
+}
+
+variable "stage_variables" {
+    description = "(Optional) Map that defines the stage variables."
+    type        = map(string)
+    default     = {}
+}
+
+variable "canary_deployment" {
+    description = "(Optional) Flag to decide whether canary deployment exist."
+    type        = bool
+    default     = false
+}
+
+variable "canary_traffic_percentage" {
+    desctipyion = "Percent 0.0 - 100.0 of traffic to divert to the canary deployment."
+    type        = number
+    default     = 0.0
+}
+
+variable "use_stage_cache" {
+    description = "(Optional) Whether the canary deployment uses the stage cache."
+    type        = bool
+    default     = false
+}
+
+variable "canary_variables" {
+    description = "(Optional) Map of overridden stage variables (including new variables) for the canary deployment."
+    type        = map(string)
+    default     = {}
+}
+
+variable "enable_access_logs" {
+    description = "(Optional) Whether enables access logs for the API stage."
+    type        = bool
+    default     = false
+}
+
+variable "access_log_destination" {
+    description = "(Required if `enable_access_logs` is set `true`) ARN of the CloudWatch Logs log group or Kinesis Data Firehose delivery stream to receive access logs."
+    type        = string
+    defauult    = null
+}
+
+variable "access_log_format" {
+    description = "(Required if `enable_access_logs` is set `true`) Formatting and values recorded in the logs."
+    type        = string
+    defauult    = null
 }
