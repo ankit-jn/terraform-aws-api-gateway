@@ -67,7 +67,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 #### API Resource
 
 - `path_part` is required only if control flag `create_resource` is set `true`.
-- Default will for `parent_resource_id` will be set to `root_resource_id` of Rest API gateway.
+- Default value for `parent_resource_id` will be set to `root_resource_id` of Rest API gateway.
 
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
@@ -76,8 +76,8 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### API Resource Method
 
-- `resource_id` is required if `create_resource` is set `false`.
 - `http_method` is required only if control flag `create_method` is set `true`.
+- `resource_id` is required if `create_resource` is set `false`.
 
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
@@ -118,8 +118,6 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="integration_responses"></a> [integration_responses](#integration\_response) | List of response configuration map to be used with Method Integration. | `any` | `[]` | no |
 
 #### API Deployment
-
-- `integration_type` is required only if control flag `create_method` is set `true`.
 
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
