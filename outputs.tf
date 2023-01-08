@@ -33,6 +33,11 @@ output "api_keys" {
     value       = module.api_security.api_keys
 }
 
+output "api_authorizers" {
+    description = "The API Gateway Authorizer details."
+    value = module.api_security.api_authorizers
+}
+
 output "stage_id" {
     description = "ID of the Stage."
     value       = var.create_deployment ? module.api_deployment[0].stage_id : null

@@ -170,9 +170,19 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### authorizer
 
+- For `REQUEST` type, The value for `identity_source` may be a comma-separated list of values, including headers, query string parameters and stage variables.
+- `provider_arns` is required for `COGNITO_USER_POOLS` type.
+
 | Name | Description | Type | Default | Required |
 |:------|:------|:------|:------|:------:|
 | <a name="name"></a> [name](#input\_name) | Name of the Authorizer. | `string` |  | yes |
+| <a name="type"></a> [type](#input\_type) | Type of the authorizer | `string` | `"TOKEN"` | no |
+| <a name="authorizer_uri"></a> [authorizer_uri](#input\_authorizer\_uri) | Authorizer's Uniform Resource Identifier (URI). | `string` | `null` | no |
+| <a name="identity_source"></a> [identity_source](#input\_identity\_source) | Source of the identity in an incoming request. | `string` | `"method.request.header.Authorization"` | no |
+| <a name="authorizer_credentials"></a> [authorizer_credentials](#input\_authorizer\_credentials) | Credentials required for the authorizer. | `string` | `null` | no |
+| <a name="authorizer_result_ttl_in_seconds"></a> [authorizer_result_ttl_in_seconds](#input\_authorizer\_result\_ttl\_in\_seconds) | TTL of cached authorizer results in seconds. | `number` | `300` | no |
+| <a name="identity_validation_expression"></a> [identity_validation_expression](#input\_identity\_validation\_expression) | Validation expression for the incoming identity. | `string` | `null` | no |
+| <a name="provider_arns"></a> [provider_arns](#input\_provider\_arns) | List of the Amazon Cognito user pool ARNs. | `list(string)` | `null` | no |
 
 #### method_response
 
@@ -204,6 +214,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="resource_id"></a> [resource_id](#output\_resource\_id) | `string` | Resource's identifier. |
 | <a name="resource_path"></a> [resource_path](#output\_resource\_path) | `string` | Complete path for the API resource, including all parent paths. |
 | <a name="api_keys"></a> [api_keys](#output\_api\_keys) | `map(map(string))` | The API key details. |
+| <a name="api_authorizers"></a> [api_authorizers](#output\_api\_authorizers) | `map(map(string))` | The API Authorizer details. |
 | <a name="stage_id"></a> [stage_id](#output\_stage\_id) | `string` | ID of the Stage. |
 | <a name="stage_arn"></a> [stage_arn](#output\_stage\_arn) | `string` | ARN of the Stage. |
 | <a name="invoke_url"></a> [invoke_url](#output\_invoke\_url) | `string` | URL to invoke the API pointing to the stage. |

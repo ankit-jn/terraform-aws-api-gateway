@@ -135,6 +135,13 @@ variable "authorizers" {
 List of Authorizers configuration map:
 
 name: (Required) Name of the Authorizer.
+type: (Optional) Type of the authorizer, Default: TOKEN
+authorizer_uri: (Optional, required for type TOKEN/REQUEST) Authorizer's Uniform Resource Identifier (URI).
+identity_source: (Optional) Source of the identity in an incoming request.
+authorizer_credentials: (Optional) Credentials required for the authorizer.
+authorizer_result_ttl_in_seconds: (Optional) TTL of cached authorizer results in seconds. Defaults to 300.
+identity_validation_expression: (Optional) Validation expression for the incoming identity.
+provider_arns: (Optional, required for type COGNITO_USER_POOLS) List of the Amazon Cognito user pool ARNs.
 EOF
     type        = map(any)
     default     = []
