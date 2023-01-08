@@ -8,8 +8,8 @@ output "arn" {
     value       = var.create_api ? module.rest_api[0].arn : null
 }
 
-output "execution_arn" {
-    description = "Execution ARN part to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function."
+output "api_execution_arn" {
+    description = "API Gateway Execution ARN part to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function."
     value       = var.create_api ? module.rest_api[0].execution_arn : null
 }
 
@@ -30,7 +30,7 @@ output "resource_path" {
 
 output "api_keys" {
     description = "The API key details."
-    value       = mmodule.api_security.api_keys
+    value       = module.api_security.api_keys
 }
 
 output "stage_id" {
@@ -48,7 +48,7 @@ output "invoke_url" {
     value       = var.create_deployment ? module.api_deployment[0].invoke_url : null
 }
 
-output "execution_arn" {
-    description = "Execution ARN to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function."
+output "deployment_execution_arn" {
+    description = "Deployment Execution ARN to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function."
     value       = var.create_deployment ? module.api_deployment[0].execution_arn : null
 }

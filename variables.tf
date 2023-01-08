@@ -29,7 +29,7 @@ variable "create_deployment" {
 ## API Gateway
 ###################################################
 variable "name" {
-    description = "(Required) The name of the Rest API Gateway"
+    description = "(Required) The name of the Rest API Gateway."
     type        = string
 }
 
@@ -223,21 +223,36 @@ variable "operation_name" {
 }
 
 variable "request_models" {
-    description = "Map of the API models used for the request's content type where key is the content type and value is model's name."
+    description = "(Optional) Map of the API models used for the request's content type where key is the content type and value is model's name."
     type        = map(string)
     default     = {}
 }
 
 variable "method_request_headers" {
-    description = "The map of Headers where key is header name and value indicates if the header is required."
+    description = "(Optional) The map of Headers where key is header name and value indicates if the header is required."
     type        = map(bool)
     default     = {}
 }
 
 variable "method_query_string_parameters" {
-    description = "The map of Query String Parameters where key is Parameter name and value indicates if the parameter is required."
+    description = "(Optional) The map of Query String Parameters where key is Parameter name and value indicates if the parameter is required."
     type        = map(bool)
     default     = {}
+}
+
+###################################################
+## API Resource Method Response
+###################################################
+variable "method_responses" {
+    description = <<EOF
+List of response configuration map to be used with Method:
+
+status_code: HTTP Status Code
+response_headers: (Optional) The map of headers where key is the header name and value indicates if the header is mandatory.
+response_models: (Optional) Map of API models used for response's content type where key is the content type and value is model's name.
+EOF
+    type    = any
+    default = [] 
 }
 
 ###################################################
@@ -266,7 +281,7 @@ variable "integration_type" {
 }
 
 variable "integration_connection_type" {
-    description = "(Optional) Integration Input's type."
+    description = "(Optional) Integration Connection Type."
     type        = string
     default     = "Internet"
 
@@ -358,26 +373,11 @@ variable "integration_cache_parameters" {
 }
 
 ###################################################
-## API Resource Method Response
-###################################################
-variable "method_responses" {
-    description = <<EOF
-List of response configuration map to be used with Method:
-
-status_code: HTTP Status Code
-response_headers: (Optional) The map of headers where key is the header name and value indicates if the header is mandatory.
-response_models: (Optional) Map of API models used for response's content type where key is the content type and value is model's name.
-EOF
-    type    = any
-    default = [] 
-}
-
-###################################################
 ## API Resource Method Integration Response
 ###################################################
 variable "integration_responses" {
     description = <<EOF
-List of response configuration map to be used with Integration:
+List of response configuration map to be used with Method Integration:
 
 status_code: HTTP Status Code
 http_method: HTTP Method
@@ -406,7 +406,7 @@ variable "deployment_triggers" {
 }
 
 variable "stage_name" {
-    description = "(Optional) Name of the stage to create with this deployment."
+    description = "(Required, if `create_deployment` is set `true`) Name of the stage to create with this deployment."
     type        = string
     default     = null
 }
@@ -460,7 +460,7 @@ variable "canary_deployment" {
 }
 
 variable "canary_traffic_percentage" {
-    desctipyion = "Percent 0.0 - 100.0 of traffic to divert to the canary deployment."
+    desctipyion = "(Optional) Percent 0.0 - 100.0 of traffic to divert to the canary deployment."
     type        = number
     default     = 0.0
 }

@@ -58,6 +58,7 @@ module "api_method" {
     resource_id = local.resource_id
     http_method  = var.http_method
     
+    ## Method Request
     authorization = var.method_authorization 
     authorizer_id = var.authorizer_id
     authorization_scopes = var.authorization_scopes
@@ -70,46 +71,35 @@ module "api_method" {
     operation_name = var.operation_name
     request_models = var.request_models
     
-    request_headers = var.method_request_headers
-    query_string_parameters = var.method_query_string_parameters
-
-    responses = var.method_responses
+    method_request_headers = var.method_request_headers
+    method_query_string_parameters = var.method_query_string_parameters
     
-    depends_on = [
-        module.api_models
-    ]
-}
-
-module "api_integration" {
-    source = "./modules/api-integration"
-
-    count = var.create_method ? 1 : 0
-
-    rest_api_id = local.rest_api_id
-    resource_id = local.resource_id
-    http_method  = var.http_method
-
+    ## Method Response
+    method_responses = var.method_responses
+    
+    ## Integration Request
     integration_http_method = var.integration_http_method
     integration_type = var.integration_type
-    connection_type = var.integration_connection_type
-    connection_id = var.integration_connection_id
-    uri = var.integration_uri
-    credentials = var.integration_credentials
-    content_handling = var.integration_request_content_handling
-    cache_namespace = var.integration_cache_namespace
-    timeout = var.integration_timeout
+    integration_connection_type = var.integration_connection_type
+    integration_connection_id = var.integration_connection_id
+    integration_uri = var.integration_uri
+    integration_credentials = var.integration_credentials
+    integration_content_handling = var.integration_request_content_handling
+    integration_cache_namespace = var.integration_cache_namespace
+    integration_timeout = var.integration_timeout
     
-    passthrough_behavior = var.integration_passthrough_behavior
+    integration_passthrough_behavior = var.integration_passthrough_behavior
     
-    request_templates = var.integration_request_templates
-    request_headers = var.integration_request_headers
-    request_parameters = var.integration_request_parameters
-    cache_parameters = var.integration_cache_parameters
+    integration_request_templates = var.integration_request_templates
+    integration_request_headers = var.integration_request_headers
+    integration_request_parameters = var.integration_request_parameters
+    integration_cache_parameters = var.integration_cache_parameters
     
-    responses = var.integration_responses
+    ## Integration Response
+    integration_responses = var.responses
 
     depends_on = [
-        module.api_method
+        module.api_models
     ]
 }
 
