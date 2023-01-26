@@ -1,3 +1,14 @@
+resource aws_api_gateway_deployment "this" {
+    rest_api_id = var.rest_api_id 
+    description = var.description
+    
+    triggers = var.deployment_triggers 
+
+    lifecycle {
+        create_before_destroy = true
+    }
+}
+
 resource aws_api_gateway_stage "this" {
     stage_name = var.stage_name
     description = var.stage_description
@@ -37,14 +48,28 @@ resource aws_api_gateway_stage "this" {
                         var.default_tags)
 }
 
+resource aws_api_gateway_method_settings "this" {
 
-resource aws_api_gateway_deployment "this" {
-    rest_api_id = var.rest_api_id 
-    description = var.description
-    
-    triggers = var.deployment_triggers 
+    for_each = { for method_setting in var.method_settings: method_setting.path => method_setting }
 
-    lifecycle {
-        create_before_destroy = true
+    rest_api_id = var.rest_api_id
+    stage_name  = var.stage_name
+    method_path = each.key
+
+    settings {
+        metrics_enabled = try(each.value.metrics_enabled, false)
+        logging_level = try(each.value.logging_level, "OFF")
+        data_trace_enabled = try(each.value.data_trace_enabled, false)
+        throttling_burst_limit = try(each.value.throttling_burst_limit, -1)
+        throttling_rate_limit = try(each.value.throttling_rate_limit, -1)
+        caching_enabled = try(each.value.caching_enabled, false)
+        cache_ttl_in_seconds = try(each.value.cache_ttl_in_seconds, null)
+        cache_data_encrypted = try(each.value.cache_data_encrypted, null)
+        require_authorization_for_cache_control = try(each.value.require_authorization_for_cache_control, null)
+        unauthorized_cache_control_header_strategy = try(each.value.unauthorized_cache_control_header_strategy, null)
     }
+
+    depends_on = [
+        aws_api_gateway_stage.this
+    ]
 }

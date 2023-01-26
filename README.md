@@ -147,6 +147,18 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="use_stage_cache"></a> [use_stage_cache](#input\_use\_stage\_cache) | Whether the canary deployment uses the stage cache. | `bool` | `false` | no |
 | <a name="canary_variables"></a> [canary_variables](#input\_canary\_variables) | Map of overridden stage variables (including new variables) for the canary deployment. | `map(string)` | `{}` | no |
 
+#### API Gateway Stage Method Settings
+
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="method_settings"></a> [method_settings](#method_settings) | List of API Gateway Stage Method Settings configuration Map | `any` | `[]` | no |
+
+#### VPC Links
+
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="vpc_links"></a> [vpc_links](#vpc\_link) | List of VPC Links configuration Map | `any` | `[]` | no |
+
 ### Nested Configuration Maps:  
 
 #### Models
@@ -203,6 +215,31 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="response_headers"></a> [response_headers](#input\_response\_headers) | The list of headers that can be read from the backend responses. | `list(string)` | `[]` | no |
 | <a name="response_templates"></a> [response_templates](#input\_response\_templates) | Map of templates used to transform the integration response body where key is the content type and value is template string. | `map(string)` |  | no |
 
+#### method_settings
+
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="path"></a> [path](#input\_path) |  | `string` |  | no |
+| <a name="metrics_enabled"></a> [metrics_enabled](#input\_metrics\_enabled) |  | `bool` | `false` | no |
+| <a name="logging_level"></a> [logging_level](#input\_logging\_level) |  | `string` | `OFF` | no |
+| <a name="data_trace_enabled"></a> [data_trace_enabled](#input\_data\_trace\_enabled) |  | `bool` | `false` | no |
+| <a name="throttling_burst_limit"></a> [throttling_burst_limit](#input\_throttling\_burst\_limit) |  | `number` | `-1` | no |
+| <a name="throttling_rate_limit"></a> [throttling_rate_limit](#input\_throttling\_rate\_limit) |  | `number` | `-1` | no |
+| <a name="caching_enabled"></a> [caching_enabled](#input\_caching\_enabled) |  | `bool` | `false` | no |
+| <a name="cache_ttl_in_seconds"></a> [cache_ttl_in_seconds](#input\_cache\_ttl\_in\_seconds) |  | `number` | `null` | no |
+| <a name="cache_data_encrypted"></a> [cache_data_encrypted](#input\_cache\_data\_encrypted) |  | `bool` | `null` | no |
+| <a name="require_authorization_for_cache_control"></a> [require_authorization_for_cache_control](#input\_require\_authorization\_for\_cache\_control) |  | `bool` | `null` | no |
+| <a name="unauthorized_cache_control_header_strategy"></a> [unauthorized_cache_control_header_strategy](#input\_unauthorized\_cache\_control\_header\_strategy) |  | `string` | `null` | no |
+
+#### vpc_link
+
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | Name used to label and identify the VPC link. | `string` |  | yes |
+| <a name="description"></a> [description](#input\_description) | Description of the VPC link. | `string` | `null` | no |
+| <a name="target_arns"></a> [target_arns](#input\_target\_arns) | List of network load balancer arns in the VPC targeted by the VPC link. Currently AWS only supports 1 target. | `list(string)` |  | yes |
+| <a name="tags"></a> [tags](#input\_tags) | Key-value map of resource tags. | `map(string)` | `{}` | no |
+
 ### Outputs
 
 | Name | Type | Description |
@@ -219,6 +256,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="stage_arn"></a> [stage_arn](#output\_stage\_arn) | `string` | ARN of the Stage. |
 | <a name="invoke_url"></a> [invoke_url](#output\_invoke\_url) | `string` | URL to invoke the API pointing to the stage. |
 | <a name="deployment_execution_arn"></a> [deployment_execution_arn](#output\_deployment\_execution\_arn) | `string` | Deployment Execution ARN to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function. |
+| <a name="vpc_links"></a> [vpc_links](#output\_vpc\_links) | `map(string)` | VPC Link Identifiers map. |
 
 ### Authors
 

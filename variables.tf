@@ -501,3 +501,38 @@ variable "access_log_format" {
     type        = string
     defauult    = null
 }
+
+varible "method_settings" {
+    description = <<EOF
+List of API Gateway Stage Method Settings configuration Map:
+
+path: (Required) Method path defined as {resource_path}/{http_method} for an individual method override, or */* for overriding all methods in the stage.
+
+metrics_enabled: (Optional) Whether Amazon CloudWatch metrics are enabled for this method.
+logging_level: (Optional) Logging level for this method, which effects the log entries pushed to Amazon CloudWatch Logs. The available levels are OFF, ERROR, and INFO.
+data_trace_enabled: (Optional) Whether data trace logging is enabled for this method, which effects the log entries pushed to Amazon CloudWatch Logs.
+throttling_burst_limit: (Optional) Throttling burst limit. Default: -1 (throttling disabled).
+throttling_rate_limit: (Optional) Throttling rate limit. Default: -1 (throttling disabled).
+caching_enabled: (Optional) Whether responses should be cached and returned for requests. A cache cluster must be enabled on the stage for responses to be cached.
+cache_ttl_in_seconds: (Optional) Time to live (TTL), in seconds, for cached responses. The higher the TTL, the longer the response will be cached.
+cache_data_encrypted: (Optional) Whether the cached responses are encrypted.
+require_authorization_for_cache_control: (Optional) Whether authorization is required for a cache invalidation request.
+unauthorized_cache_control_header_strategy: (Optional) How to handle unauthorized requests for cache invalidation.
+EOF
+
+    type = list(map(any))
+    default = []
+}
+
+variable "vpc_links" {
+    description = <<EOF
+List of VPC Links configuration Map:
+
+name: (Required) Name used to label and identify the VPC link.
+description: (Optional) Description of the VPC link.
+target_arns: (Required, ForceNew) List of network load balancer arns in the VPC targeted by the VPC link. Currently AWS only supports 1 target.
+tags: (Optional) Key-value map of resource tags.
+EOF
+    type        = any
+    default     = []
+}

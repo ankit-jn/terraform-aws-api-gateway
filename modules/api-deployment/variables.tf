@@ -97,3 +97,8 @@ variable "access_log_format" {
     description = "Formatting and values recorded in the logs."
     type        = string
 }
+
+variable "method_settings" {
+    description = "List of API Gateway Stage Method Settings configuration Map"
+    type = list(map(any))
+}

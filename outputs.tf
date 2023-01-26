@@ -57,3 +57,8 @@ output "deployment_execution_arn" {
     description = "Deployment Execution ARN to be used in lambda_permission's source_arn when allowing API Gateway to invoke a Lambda function."
     value       = var.create_deployment ? module.api_deployment[0].execution_arn : null
 }
+
+output "vpc_links" {
+    description = "VPC Link Identifiers map."
+    value       = { for vpc_link in var.vpc_links: vpc_link.name => aws_api_gateway_vpc_link[vpc_link.name].id }
+}

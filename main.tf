@@ -32,7 +32,7 @@ module "api_security" {
     api_gateway_name = var.name
     rest_api_id = local.rest_api_id
     
-    api_keys = var.api_keys
+    api_keys    = var.api_keys
     authorizers = var.authorizers
     
     default_tags = var.default_tags
@@ -135,5 +135,19 @@ module "api_deployment" {
     access_log_destination = var.access_log_destination
     access_log_format = var.access_log_format
 
+    method_settings = var.method_settings
+    
     default_tags = var.default_tags
+}
+
+resource aws_api_gateway_vpc_link "this" {
+    for_each = { for vpc_link in var.vpc_links: vpc_link.name => vpc_link }
+
+    name        = each.key
+    description = lookup(each.value, "description", each.key)
+    target_arns = each.value.target_arns
+
+    tags = merge({ "Name" = each.key }, 
+                        lookup(each.value, "tags", {}), 
+                        var.default_tags)
 }

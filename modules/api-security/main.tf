@@ -27,5 +27,4 @@ resource aws_api_gateway_authorizer "this" {
     authorizer_result_ttl_in_seconds = try(each.value.authorizer_result_ttl_in_seconds, 300)
     identity_validation_expression = try(each.value.identity_validation_expression, null)
     provider_arns = try(each.value.provider_arns, null)
-
 }
