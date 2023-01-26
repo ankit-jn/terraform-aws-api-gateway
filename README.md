@@ -7,15 +7,15 @@ A Terraform module for managing AWS API Gatway resources
 This module features the following components to be provisioned:
 
 -  API Gateway Rest API [[aws_api_gateway_rest_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api)]
--  API Gateway - Model [[aws_api_gateway_model](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_model)]
+-  API Gateway Models [[aws_api_gateway_model](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_model)]
 -  API Gateway API Key [[aws_api_gateway_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_api_key)]
 -  API Gateway Authorizer [[aws_api_gateway_authorizer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer)]
 -  API Gateway Resource [[aws_api_gateway_resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource)]
 -  API Gateway Resource HTTP Method [[aws_api_gateway_method](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method)]
--  API Gateway Request Validator [[aws_api_gateway_request_validator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_request_validator)]
 -  API Gateway Resource HTTP Method Response [[aws_api_gateway_method_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response)]
 -  API Gateway Resource HTTP Method Integration [[aws_api_gateway_integration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration)]
 -  API Gateway Resource HTTP Method Integration Response [[aws_api_gateway_integration_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response)]
+-  API Gateway Request Validator [[aws_api_gateway_request_validator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_request_validator)]
 -  API Gateway REST Deployment [[aws_api_gateway_deployment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment)]
 -  API Gateway Stage [[aws_api_gateway_stage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage)]
 -  API Gateway Stage Method Settings. [[aws_api_gateway_method_settings](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_settings)]
